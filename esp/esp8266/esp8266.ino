@@ -4,8 +4,8 @@
 #include <string.h>
 #include <Wire.h>
 
-#define WIFI_SSID "OPPO F11"
-#define WIFI_PASSWORD "trung2lan"
+#define WIFI_SSID "THANHTRUNG"
+#define WIFI_PASSWORD "12345678"
 
 #define MQTT_SERVER "4a05b8e1d6604c8c8c84238e32f702e8.s2.eu.hivemq.cloud"
 #define MQTT_PORT 8883
@@ -18,24 +18,19 @@ PubSubClient client(wifiClient);
 void setup() {
   pinMode(LED_BUILTIN, HIGH);
   // put your setup code here, to run once:
-  Serial.begin(9600);
-  // Wire.begin(D1, D2);
+  Wire.begin(D1, D2);
   setupWifi();
   wifiClient.setInsecure();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);
   connectToBroker();
+  Serial.begin(9600);
   Serial.println("Start transfer");
 }
 
 void loop() {
   client.loop();
   // put your main code here, to run repeatedly:
-  // Wire.beginTransmission(8);
-  // Wire.write("Hello Arduino");
-  // Wire.endTransmission();
-  // Wire.requestFrom(8,4); // 20 ky tu
-  // delay(200);
 }
 
 void setupWifi() {
@@ -70,4 +65,7 @@ void connectToBroker() {
 void callback(char* topic, byte *payload, unsigned int length) {
   Serial.println(topic);
   Serial.write(payload, length);
+  Wire.beginTransmission(8);
+  Wire.write(1);
+  Wire.endTransmission();
 }
