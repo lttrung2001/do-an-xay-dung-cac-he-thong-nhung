@@ -1,3 +1,4 @@
+#include <Wire.h>
 #include <Servo.h>
 #include <Ultrasonic.h>
 #include <L298N.h>
@@ -14,17 +15,25 @@ Ultrasonic ultrasonic(trigPin, echoPin);
 const int servoPin = 9;
 Servo servo;
 
+const int ENA = 8;
+const int ENB = 3;
 const int IN1 = 5;
 const int IN2 = 4;
 const int IN3 = 7;
 const int IN4 = 6;
-L298N leftMotor(IN1, IN2);
+L298N leftMotor(ENA, IN1, IN2);
 // Right motor can not backward
-L298N rightMotor(IN3, IN4);
+L298N rightMotor(ENB, IN3, IN4);
 
 void setup() {
   // put your setup code here, to run once:
   servo.attach(servoPin);
+
+  leftMotor.setSpeed(255);
+  rightMotor.setSpeed(255);
+
+  Wire.begin(8); // Register wire with address 8
+  Wire.onReceive(receiveEvent);
   Serial.begin(9600);  // Starts the serial communication
 }
 
@@ -44,7 +53,6 @@ void loop() {
       servo.write(i);
       delay(200);
       distance = ultrasonic.read();
-      Serial.println(distance);
       int currentAngle = 90;
       if (distance > max) {
         max = distance;
@@ -119,4 +127,14 @@ int lookRight() {
 void lookFront() {
   servo.write(90);
   delay(200);
+}
+
+void receiveEvent(int howMany) {
+  // Request 4 bytes từ slave có id #8
+  // Wire.requestFrom(8, 4);
+  while (0 < Wire.available()) {
+    int number = Wire.read();
+    Serial.print("Value: ");
+    Serial.println(number);
+  }
 }
