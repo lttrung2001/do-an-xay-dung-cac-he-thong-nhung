@@ -36,21 +36,24 @@ class MainActivity : AppCompatActivity() {
                 t.printStackTrace()
             } else {
                 Log.i("INFO", "CONNECTED")
-                viewBinding.buttonLeft.setOnClickListener {
-                    val value = 1
-                    client.publishWith().topic("control").payload(ByteArray(value)).send()
+                viewBinding.buttonChangeStatus.setOnClickListener {
+                    client.publishWith().topic("control").payload("0".toByteArray()).send()
                 }
-                viewBinding.buttonRight.setOnClickListener {
-                    val value = 3
-                    client.publishWith().topic("control").payload(ByteArray(value)).send()
+                viewBinding.buttonLeft.setOnTouchListener { v, event ->
+                    client.publishWith().topic("control").payload("1".toByteArray()).send()
+                    true
                 }
-                viewBinding.buttonForward.setOnClickListener {
-                    val value = 2
-                    client.publishWith().topic("control").payload(ByteArray(value)).send()
+                viewBinding.buttonRight.setOnTouchListener { v, event ->
+                    client.publishWith().topic("control").payload("3".toByteArray()).send()
+                    true
                 }
-                viewBinding.buttonBackward.setOnClickListener {
-                    val value = 4
-                    client.publishWith().topic("control").payload(ByteArray(value)).send()
+                viewBinding.buttonForward.setOnTouchListener { v, event ->
+                    client.publishWith().topic("control").payload("2".toByteArray()).send()
+                    true
+                }
+                viewBinding.buttonBackward.setOnTouchListener { v, event ->
+                    client.publishWith().topic("control").payload("4".toByteArray()).send()
+                    true
                 }
             }
         }

@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="com.lttrung.controlapp.MainActivity">
+
+    <ToggleButton
+        android:id="@+id/button_change_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textOff="Turn on self-driving"
+        android:textOn="Turn off self-driving"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_left"

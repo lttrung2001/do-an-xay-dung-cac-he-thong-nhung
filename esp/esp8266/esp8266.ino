@@ -34,6 +34,8 @@ L298N leftMotor(IN1, IN2);
 // Right motor can not backward
 L298N rightMotor(IN3, IN4);
 
+bool isSelfDriving = true;
+
 void setup() {
   pinMode(LED_BUILTIN, HIGH);
   // put your setup code here, to run once:
@@ -50,28 +52,28 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // client.loop();
-  int leftDistance = 0;
-  int rightDistance = 0;
-  // Read distance
-  distance = ultrasonic.read();
-  delay(100);
-  Serial.print("Front: ");
-  Serial.println(distance);
-  if (distance <= 30) {
-    stopAllMotors();
-    // goBack();
-    // stopAllMotors();
-    leftDistance = lookLeft();
-    rightDistance = lookRight();
-    lookFront();
-    if (leftDistance > rightDistance) {
-      turnLeft();
+  client.loop();
+  if (isSelfDriving) {
+    int leftDistance = 0;
+    int rightDistance = 0;
+    // Read distance
+    distance = ultrasonic.read();
+    delay(100);
+    if (distance <= 30) {
+      stopAllMotors();
+      leftDistance = lookLeft();
+      rightDistance = lookRight();
+      lookFront();
+      if (leftDistance > rightDistance) {
+        turnLeft();
+      } else {
+        turnRight();
+      }
     } else {
-      turnRight();
+      goForward();
     }
   } else {
-    goForward();
+    stopAllMotors();
   }
 }
 
@@ -95,6 +97,7 @@ void connectToBroker() {
     if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) {
       Serial.println("connected");
       client.subscribe("topic2");
+      client.subscribe("control");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -104,7 +107,32 @@ void connectToBroker() {
   }
 }
 
-void callback(char* topic, byte *payload, unsigned int length) {
+void callback(char* topic, byte* payload, unsigned int length) {
+  if (strcmp(topic, "control") == 0) {
+    char value[1];
+    value[0] = payload[0];
+    Serial.println(String(value));
+    if (String(value).substring(0,1) == "1") {
+      leftMotor.backward();
+      rightMotor.forward();
+      delay(100);
+    } else if (String(value).substring(0,1) == "3") {
+      leftMotor.forward();
+      rightMotor.backward();
+      delay(100);
+    } else if (String(value).substring(0,1) == "2") {
+      leftMotor.forward();
+      rightMotor.forward();
+      delay(100);
+    } else if (String(value).substring(0,1) == "4") {
+      leftMotor.backward();
+      rightMotor.backward();
+      delay(100);
+    } else {
+      isSelfDriving = !isSelfDriving;
+    }
+    return;
+  }
   Serial.println(topic);
   Serial.write(payload, length);
 }
@@ -141,8 +169,6 @@ int lookLeft() {
   delay(200);
   int leftDistance = ultrasonic.read();
   delay(100);
-  Serial.print("Left: ");
-  Serial.println(leftDistance);
   return leftDistance;
 }
 
@@ -151,8 +177,6 @@ int lookRight() {
   delay(200);
   int rightDistance = ultrasonic.read();
   delay(100);
-  Serial.print("Right: ");
-  Serial.println(rightDistance);
   return rightDistance;
 }
 
