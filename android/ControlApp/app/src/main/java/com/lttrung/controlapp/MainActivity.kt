@@ -8,7 +8,7 @@ import com.hivemq.client.internal.mqtt.datatypes.MqttUtf8StringImpl
 import com.hivemq.client.internal.mqtt.message.auth.MqttSimpleAuth
 import com.hivemq.client.mqtt.MqttClient
 import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient
-import com.lttrung.broadcastimageapp.databinding.ActivityMainBinding
+import com.lttrung.controlapp.databinding.ActivityMainBinding
 import java.nio.ByteBuffer
 import java.util.*
 
