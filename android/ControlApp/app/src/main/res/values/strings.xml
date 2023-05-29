@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BroadcastImageApp</string>
+    <string name="control_app">Control App</string>
 </resources>

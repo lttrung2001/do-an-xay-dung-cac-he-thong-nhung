@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace 'com.lttrung.broadcastimageapp'
+    namespace 'com.lttrung.controlapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.lttrung.broadcastimageapp"
+        applicationId "com.lttrung.controlapp"
         minSdk 24
         targetSdk 33
         versionCode 1
