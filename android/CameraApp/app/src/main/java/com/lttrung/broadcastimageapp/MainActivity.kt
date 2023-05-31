@@ -46,9 +46,6 @@ class MainActivity : AppCompatActivity() {
         MutableLiveData<ByteArray>()
     }
 
-    //    private val socket: Socket by lazy {
-//        Socket("192.168.1.88", 8080)
-//    }
     private val client: Mqtt5AsyncClient by lazy {
         MqttClient.builder().identifier(UUID.randomUUID().toString()).serverHost(BROKER)
             .serverPort(PORT).useMqttVersion5().sslWithDefaultConfig().simpleAuth(
@@ -80,13 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
         // Set up the listeners for take photo and video capture buttons
         viewBinding.imageCaptureButton.setOnClickListener {
-//            client.publishWith().topic("topic2").payload("hehe".toByteArray(Charsets.UTF_8)).send().whenComplete { connAck, t ->
-//                if (t != null) {
-//                    t.printStackTrace()
-//                } else {
-//                    Log.i("INFO", "PUBLISHED")
-//                }
-//            }
             takePhoto()
         }
         // Set up observer
