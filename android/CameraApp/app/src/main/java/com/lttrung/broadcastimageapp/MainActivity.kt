@@ -9,12 +9,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
+import android.view.Surface.ROTATION_0
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -37,7 +35,10 @@ class MainActivity : AppCompatActivity() {
     }
     private val imageCapture: ImageCapture by lazy {
         ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setMaxResolution(Size.parseSize("1000x1000")).build()
+            .setDefaultResolution(Size(1280, 720))
+            .setTargetRotation(ROTATION_0)
+            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+            .build()
     }
     private val cameraExecutor: ExecutorService by lazy {
         Executors.newSingleThreadExecutor()
