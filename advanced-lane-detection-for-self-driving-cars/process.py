@@ -73,16 +73,17 @@ def pipeline(frame):
     birdeye_view_panel = cv2.addWeighted(info_panel, 1, birdeye_view_panel, 0.2, 0)
     road_map = illustrate_driving_lane_with_topdownview(w_color_result, left_line, right_line)
     birdeye_view_panel[10:105, cols-106:cols-11] = road_map
-    birdeye_view_panel = illustrate_info_panel(birdeye_view_panel, left_line, right_line)
+    birdeye_view_panel, int_direction = illustrate_info_panel(birdeye_view_panel, left_line, right_line)
     
-    return birdeye_view_panel      
+    return birdeye_view_panel, int_direction
 
 
 if __name__ == '__main__':
     # If working with images, don't use moviepy
     if input_type == 'image':
         img = cv2.imread(input_name)
-        bird_eye = pipeline(img)
+        bird_eye, int_direction = pipeline(img)
+        print(int_direction)
         cv2.imshow("test", bird_eye)
         cv2.waitKey(0)
 
