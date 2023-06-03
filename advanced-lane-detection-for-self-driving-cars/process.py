@@ -12,7 +12,7 @@ input_type = 'image'
 # input_type = 'video' 
 #input_type = 'frame_by_frame'
 
-input_name = 'test_images/real_test_3.jpg'
+input_name = 'test_images/newfolder/z4400345282683_2e5e41c1af914bb9525d2260142a2574.jpg'
 
 left_line = Line()
 right_line = Line()
