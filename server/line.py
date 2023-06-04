@@ -481,19 +481,19 @@ def illustrate_info_panel(img, left_line, right_line):
     """
 
     road_info, curvature, deviation, int_direction = get_measurements(left_line, right_line)
-    cv2.putText(img, 'Measurements ', (75, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (80, 80, 80), 2)
+    # cv2.putText(img, 'Measurements ', (75, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (80, 80, 80), 2)
 
-    lane_info = 'Lane is ' + road_info
-    if curvature == -1:
-        lane_curve = 'Radius of Curvature : <Straight line>'
-    else:
-        lane_curve = 'Radius of Curvature : {0:0.3f}m'.format(curvature)
-    #deviate = 'Deviating ' + deviation  # deviating how much from center, in %
-    deviate = 'Distance from Center : ' + deviation  # deviating how much from center
+    # lane_info = 'Lane is ' + road_info
+    # if curvature == -1:
+    #     lane_curve = 'Radius of Curvature : <Straight line>'
+    # else:
+    #     lane_curve = 'Radius of Curvature : {0:0.3f}m'.format(curvature)
+    # #deviate = 'Deviating ' + deviation  # deviating how much from center, in %
+    # deviate = 'Distance from Center : ' + deviation  # deviating how much from center
 
-    cv2.putText(img, lane_info, (10, 63), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (100, 100, 100), 1)
-    cv2.putText(img, lane_curve, (10, 83), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (100, 100, 100), 1)
-    cv2.putText(img, deviate, (10, 103), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (100, 100, 100), 1)
+    # cv2.putText(img, lane_info, (10, 63), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (100, 100, 100), 1)
+    # cv2.putText(img, lane_curve, (10, 83), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (100, 100, 100), 1)
+    # cv2.putText(img, deviate, (10, 103), cv2.FONT_HERSHEY_SIMPLEX, 0.50, (100, 100, 100), 1)
 
     return img, int_direction
 

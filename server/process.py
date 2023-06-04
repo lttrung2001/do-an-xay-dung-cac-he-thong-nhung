@@ -41,12 +41,6 @@ def pipeline(frame):
     # Lấy kích thước ảnh theo chiều ngang và dọc theo pixel lưu vào biến rows và cols
     rows, cols = undist_img.shape[:2]
 
-    # Khử nhiễu hạt tiêu cho ảnh trước khi detect edge
-    # undist_img = cv2.medianBlur(undist_img, 5)
-    # cv2.imshow("medianBlur", undist_img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-
     # Detect edge và kết hợp các kết quả detect edge
     combined_gradient = get_combined_gradients(undist_img, th_sobelx, th_sobely, th_mag, th_dir)
     cv2.imshow("combined_gradient", combined_gradient)
@@ -87,26 +81,26 @@ def pipeline(frame):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    w_comb_result, w_color_result = illustrate_driving_lane(searching_img, left_line, right_line)
+    # w_comb_result, w_color_result = illustrate_driving_lane(searching_img, left_line, right_line)
 
-    # Drawing the lines back down onto the road
-    color_result = cv2.warpPerspective(w_color_result, Minv, (c_cols, c_rows))
-    lane_color = np.zeros_like(undist_img)
-    lane_color[220:rows - 12, 0:cols] = color_result
+    # # Drawing the lines back down onto the road
+    # color_result = cv2.warpPerspective(w_color_result, Minv, (c_cols, c_rows))
+    # lane_color = np.zeros_like(undist_img)
+    # lane_color[220:rows - 12, 0:cols] = color_result
 
-    # Combine the result with the original image
-    result = cv2.addWeighted(undist_img, 1, lane_color, 0.3, 0)
+    # # Combine the result with the original image
+    # result = cv2.addWeighted(undist_img, 1, lane_color, 0.3, 0)
 
-    info_panel, birdeye_view_panel = np.zeros_like(result),  np.zeros_like(result)
-    info_panel[5:110, 5:325] = (255, 255, 255)
-    birdeye_view_panel[5:110, cols-111:cols-6] = (255, 255, 255)
+    # info_panel, birdeye_view_panel = np.zeros_like(result),  np.zeros_like(result)
+    # info_panel[5:110, 5:325] = (255, 255, 255)
+    # birdeye_view_panel[5:110, cols-111:cols-6] = (255, 255, 255)
     
-    info_panel = cv2.addWeighted(result, 1, info_panel, 0.2, 0)
-    birdeye_view_panel = cv2.addWeighted(info_panel, 1, birdeye_view_panel, 0.2, 0)
-    road_map = illustrate_driving_lane_with_topdownview(w_color_result, left_line, right_line)
-    birdeye_view_panel[10:105, cols-106:cols-11] = road_map
-    birdeye_view_panel, int_direction = illustrate_info_panel(birdeye_view_panel, left_line, right_line)
-    # birdeye_view_panel, int_direction = illustrate_info_panel(img, left_line, right_line)
+    # info_panel = cv2.addWeighted(result, 1, info_panel, 0.2, 0)
+    # birdeye_view_panel = cv2.addWeighted(info_panel, 1, birdeye_view_panel, 0.2, 0)
+    # road_map = illustrate_driving_lane_with_topdownview(w_color_result, left_line, right_line)
+    # birdeye_view_panel[10:105, cols-106:cols-11] = road_map
+    # birdeye_view_panel, int_direction = illustrate_info_panel(birdeye_view_panel, left_line, right_line)
+    birdeye_view_panel, int_direction = illustrate_info_panel(undist_img, left_line, right_line)
     
     return birdeye_view_panel, int_direction
 
