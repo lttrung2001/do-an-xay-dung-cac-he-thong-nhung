@@ -1,6 +1,4 @@
 import paho.mqtt.client as paho
-from paho import mqtt
-import time
 import cv2
 import numpy as np
 
@@ -12,12 +10,8 @@ topic= "image"
 
 
 
-from camera_calibration import calib, undistort
-from threshold import get_combined_gradients, get_combined_hls, combine_grad_hls
-from line import Line, get_perspective_transform, get_lane_lines_img, illustrate_driving_lane, illustrate_info_panel, illustrate_driving_lane_with_topdownview
+from camera_calibration import calib
 from process import pipeline
-left_line = Line()
-right_line = Line()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #   Tune Parameters for different inputs        #
