@@ -420,17 +420,17 @@ def get_measurements(left_line, right_line):
 
     # calculate direction using X coordinates of left and right lanes 
     direction = ((left_line.endx - left_line.startx) + (right_line.endx - right_line.startx)) / 2
-    int_direction = 0
+    int_direction = 1
      
     if curvature > 2000 and abs(direction) < 100:
         road_info = 'Straight'
         curvature = -1
     elif curvature <= 2000 and direction < - 50:
         road_info = 'curving to Left'
-        int_direction = -1
+        int_direction = 0
     elif curvature <= 2000 and direction > 50:
         road_info = 'curving to Right'
-        int_direction = 1
+        int_direction = 2
     else:
         if left_line.road_info != None:
             road_info = left_line.road_info
