@@ -43,7 +43,7 @@ client = paho.Client(client_id="456")
 client.tls_set()
 # Set the username and password for the client
 client.username_pw_set(username, password)
-client.connect(broker, port, 60)
+client.connect(broker, port, 3600)
 
 # Assign the callback functions
 client.on_connect = on_connect

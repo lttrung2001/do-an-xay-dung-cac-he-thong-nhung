@@ -24,13 +24,13 @@ PubSubClient client(wifiClient);
 // Using to store distance value in centimeter.
 int distance = 0;
 // Define trigger and echo pins of ultrasonic sensor.
-const int trigPin = D0;
-const int echoPin = D1;
+const int trigPin = D6;
+const int echoPin = D5;
 // Declare ultrasonic object
 Ultrasonic ultrasonic(trigPin, echoPin);
 
 // Define data pin of servo.
-const int servoPin = D2;
+const int servoPin = D7;
 // Declare servo object.
 // 90 degree is look forward.
 // 60 degree is look left.
@@ -38,18 +38,16 @@ const int servoPin = D2;
 Servo servo;
 
 // Left back motor.
-const int ENA = 12;
-const int IN1 = 15;
-const int IN2 = 13;
+const int IN1 = D1;
+const int IN2 = D2;
 
 // Right back motor.
-const int ENB = 14;
-const int IN3 = 2;
-const int IN4 = 0;
+const int IN3 = D3;
+const int IN4 = D4;
 
 // Declare motor objects.
-L298N leftMotor(ENA, IN1, IN2);
-L298N rightMotor(ENB, IN3, IN4);
+L298N leftMotor(IN1, IN2);
+L298N rightMotor(IN3, IN4);
 
 // Status of car.
 // true: self-driving mode.
@@ -166,25 +164,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
     if (String(value).substring(0, 1) == "1") {
       leftMotor.backward();
       rightMotor.forward();
-      delay(100);
+      delay(500);
     }
     // Move to right.
     else if (String(value).substring(0, 1) == "3") {
       leftMotor.forward();
       rightMotor.backward();
-      delay(100);
+      delay(500);
     }
     // Move forward.
     else if (String(value).substring(0, 1) == "2") {
       leftMotor.forward();
       rightMotor.forward();
-      delay(100);
+      delay(500);
     }
     // Move backward.
     else if (String(value).substring(0, 1) == "4") {
       leftMotor.backward();
       rightMotor.backward();
-      delay(100);
+      delay(500);
     }
     // Switch mode.
     else {
@@ -243,31 +241,33 @@ void goBack() {
 
 void turnLeft() {
   leftMotor.backward();
-  delay(500);
+  rightMotor.forward();
+  delay(250);
 }
 
 void turnRight() {
   leftMotor.forward();
-  delay(500);
+  rightMotor.backward();
+  delay(250);
 }
 
 int lookLeft() {
   servo.write(120);
-  delay(100);
+  delay(200);
   int leftDistance = ultrasonic.read();
-  delay(100);
+  delay(200);
   return leftDistance;
 }
 
 int lookRight() {
   servo.write(60);
-  delay(100);
+  delay(200);
   int rightDistance = ultrasonic.read();
-  delay(100);
+  delay(200);
   return rightDistance;
 }
 
 void lookFront() {
   servo.write(90);
-  delay(100);
+  delay(200);
 }
