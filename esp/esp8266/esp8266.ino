@@ -132,10 +132,10 @@ void connectToBroker() {
     if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) {
       // Then subscribe needed topics.
       Serial.println("connected");
-      // We subscribe "topic2" to receive....
-      client.subscribe("topic2");
       // We subscribe "control" to receive control signals.
       client.subscribe("control");
+      // We subscribe "output" to receive detect direction from server
+      client.subscribe("output");
     } 
     // If client connect failed, try again after 2 seconds.
     else {
@@ -188,7 +188,19 @@ void callback(char* topic, byte* payload, unsigned int length) {
     else {
       isSelfDriving = !isSelfDriving;
     }
-    return;
+  } 
+  else if (strcmp(topic, "output") == 0) {
+    char value[1];
+    value[0] = payload[0];
+    String detectDirection(value);
+    if (detectDirection.substring(0,1) == "0") {
+      }
+    }
+    // Forward
+    else if (detectDirection.substring(0,1) == "1") {
+    } 
+    else if (detectDirection.substring(0,1) == "2") {
+    }
   }
 }
 
