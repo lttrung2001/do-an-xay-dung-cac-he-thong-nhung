@@ -21,6 +21,7 @@ import com.hivemq.client.internal.mqtt.datatypes.MqttUtf8StringImpl
 import com.hivemq.client.internal.mqtt.message.auth.MqttSimpleAuth
 import com.hivemq.client.mqtt.MqttClient
 import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient
+import com.hivemq.client.mqtt.mqtt5.message.subscribe.Mqtt5Subscribe
 import com.lttrung.broadcastimageapp.databinding.ActivityMainBinding
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
@@ -65,6 +66,9 @@ class MainActivity : AppCompatActivity() {
                 t.printStackTrace()
             } else {
                 Log.i("INFO", "CONNECTED")
+                client.subscribeWith().topicFilter("snap").callback {
+                    takePhoto()
+                }.send()
             }
         }
 
@@ -89,7 +93,6 @@ class MainActivity : AppCompatActivity() {
                     t.printStackTrace()
                 } else {
                     Log.i("INFO", "PUBLISHED")
-//                    takePhoto()
                 }
             }
         }

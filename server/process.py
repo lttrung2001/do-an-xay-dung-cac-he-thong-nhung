@@ -31,30 +31,30 @@ def pipeline(frame):
     # Correcting for Distortion
     # Khử biến dạng (cong) cho ảnh
     undist_img = undistort(frame, mtx, dist)
-    cv2.imshow("undist_img", undist_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    
+    # cv2.imshow("undist_img", undist_img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
     # Lấy kích thước ảnh theo chiều ngang và dọc theo pixel lưu vào biến rows và cols
     rows, cols = undist_img.shape[:2]
 
     # Detect edge và kết hợp các kết quả detect edge
     combined_gradient = get_combined_gradients(undist_img, th_sobelx, th_sobely, th_mag, th_dir)
-    cv2.imshow("combined_gradient", combined_gradient)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("combined_gradient", combined_gradient)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     # Chuyển đổi ảnh sang hệ màu HLS và tách thành từng kênh màu riêng để tạo thành ảnh nhị phân. Sau đó kết hợp lại để ra ảnh cuối cùng
     combined_hls = get_combined_hls(undist_img, th_h, th_l, th_s)
-    cv2.imshow("combined_hls", combined_hls)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("combined_hls", combined_hls)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     # Kết hợp gradient result và hls result
     combined_result = combine_grad_hls(combined_gradient, combined_hls)
-    cv2.imshow("combined_result", combined_result)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("combined_result", combined_result)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     # Lấy chiều ngang và chiều dọc của ảnh
     c_rows, c_cols = combined_result.shape[:2]
@@ -70,16 +70,16 @@ def pipeline(frame):
 
     # Chuyển đổi view hiện tại thành bird eye view (nhìn từ trên xuống)
     warp_img, M, Minv = get_perspective_transform(combined_result, src, dst, (480, 480))
-    cv2.imshow("warp_img", warp_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("warp_img", warp_img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     # Áp dụng kỹ thuật sliding window search để follow lane lines
     # Sau đó dựa vào các pixels trung tâm ta có thể tính được độ cong của làn đường
     searching_img = get_lane_lines_img(warp_img, left_line, right_line)
-    cv2.imshow("searching_img", searching_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("searching_img", searching_img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     birdeye_view_panel, int_direction = illustrate_info_panel(undist_img, left_line, right_line)
     

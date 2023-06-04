@@ -194,13 +194,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
     value[0] = payload[0];
     String detectDirection(value);
     if (detectDirection.substring(0,1) == "0") {
-      }
+      goForward();
+      delay(1000);
+      turnLeft();
     }
     // Forward
     else if (detectDirection.substring(0,1) == "1") {
+      goForward();
+      delay(1000);
     } 
     else if (detectDirection.substring(0,1) == "2") {
+      goForward();
+      delay(1000);
+      turnRight();
     }
+    client.publish("snap", "");
   }
 }
 
