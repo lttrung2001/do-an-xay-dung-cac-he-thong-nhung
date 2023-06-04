@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity() {
     }
     private val imageCapture: ImageCapture by lazy {
         ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setDefaultResolution(Size(1280, 720))
+            .setDefaultResolution(Size(960, 1280))
             .setTargetRotation(ROTATION_0)
-            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+            .setTargetAspectRatio(AspectRatio.RATIO_4_3)
             .build()
     }
     private val cameraExecutor: ExecutorService by lazy {
@@ -84,13 +84,12 @@ class MainActivity : AppCompatActivity() {
         imageLiveData.observe(this) {
             // Send image to server, remove photo and take a new photo
             Log.i("INFO", it.size.toString())
-            //                socket.getOutputStream().write(it)
             client.publishWith().topic("topic2").payload(it).send().whenComplete { ack, t ->
                 if (t != null) {
                     t.printStackTrace()
                 } else {
                     Log.i("INFO", "PUBLISHED")
-                    takePhoto()
+//                    takePhoto()
                 }
             }
         }
