@@ -24,13 +24,13 @@ PubSubClient client(wifiClient);
 // Using to store distance value in centimeter.
 int distance = 0;
 // Define trigger and echo pins of ultrasonic sensor.
-const int trigPin = D6;
-const int echoPin = D5;
+const int trigPin = D0;
+const int echoPin = D1;
 // Declare ultrasonic object
 Ultrasonic ultrasonic(trigPin, echoPin);
 
 // Define data pin of servo.
-const int servoPin = D7;
+const int servoPin = D2;
 // Declare servo object.
 // 90 degree is look forward.
 // 60 degree is look left.
@@ -38,16 +38,18 @@ const int servoPin = D7;
 Servo servo;
 
 // Left back motor.
-const int IN1 = D1;
-const int IN2 = D2;
+const int ENA = 12;
+const int IN1 = 15;
+const int IN2 = 13;
 
 // Right back motor.
-const int IN3 = D3;
-const int IN4 = D4;
+const int ENB = 14;
+const int IN3 = 2;
+const int IN4 = 0;
 
 // Declare motor objects.
-L298N leftMotor(IN1, IN2);
-L298N rightMotor(IN3, IN4);
+L298N leftMotor(ENA, IN1, IN2);
+L298N rightMotor(ENB, IN3, IN4);
 
 // Status of car.
 // true: self-driving mode.
@@ -99,7 +101,7 @@ void loop() {
         turnRight();
       }
     }
-    // If distance is equals or greater than defined value then forward normally. 
+    // If distance is equals or greater than defined value then forward normally.
     else {
       goForward();
     }
@@ -136,7 +138,7 @@ void connectToBroker() {
       client.subscribe("control");
       // We subscribe "output" to receive detect direction from server
       client.subscribe("output");
-    } 
+    }
     // If client connect failed, try again after 2 seconds.
     else {
       Serial.print("failed, rc=");
@@ -161,52 +163,62 @@ void callback(char* topic, byte* payload, unsigned int length) {
     char value[1];
     value[0] = payload[0];
     // If value is 1 then the car move to left.
-    if (String(value).substring(0,1) == "1") {
+    if (String(value).substring(0, 1) == "1") {
       leftMotor.backward();
       rightMotor.forward();
       delay(100);
-    } 
+    }
     // Move to right.
-    else if (String(value).substring(0,1) == "3") {
+    else if (String(value).substring(0, 1) == "3") {
       leftMotor.forward();
       rightMotor.backward();
       delay(100);
-    } 
+    }
     // Move forward.
-    else if (String(value).substring(0,1) == "2") {
+    else if (String(value).substring(0, 1) == "2") {
       leftMotor.forward();
       rightMotor.forward();
       delay(100);
-    } 
+    }
     // Move backward.
-    else if (String(value).substring(0,1) == "4") {
+    else if (String(value).substring(0, 1) == "4") {
       leftMotor.backward();
       rightMotor.backward();
       delay(100);
-    } 
+    }
     // Switch mode.
     else {
       isSelfDriving = !isSelfDriving;
     }
-  } 
-  else if (strcmp(topic, "output") == 0) {
+  } else if (strcmp(topic, "output") == 0) {
     char value[1];
     value[0] = payload[0];
     String detectDirection(value);
-    if (detectDirection.substring(0,1) == "0") {
-      goForward();
-      delay(1000);
-      turnLeft();
+    if (detectDirection.substring(0, 1) == "0") {
+      // for (int i = 255; i > 155; i -= 15) {
+      //   leftMotor.setSpeed(i);
+      //   rightMotor.setSpeed(255);
+      //   leftMotor.forward();
+      //   delay(100);
+      // }
+      leftMotor.backward();
+      rightMotor.forward();
+      delay(400);
     }
     // Forward
-    else if (detectDirection.substring(0,1) == "1") {
+    else if (detectDirection.substring(0, 1) == "1") {
       goForward();
       delay(1000);
-    } 
-    else if (detectDirection.substring(0,1) == "2") {
-      goForward();
-      delay(1000);
-      turnRight();
+    } else if (detectDirection.substring(0, 1) == "2") {
+      // for (int i = 255; i > 155; i -= 15) {
+      //   leftMotor.setSpeed(255);
+      //   rightMotor.setSpeed(i);
+      //   rightMotor.forward();
+      //   delay(100);
+      // }
+      leftMotor.forward();
+      rightMotor.backward();
+      delay(400);
     }
     client.publish("snap", "");
   }
