@@ -8,7 +8,7 @@ broker ="4a05b8e1d6604c8c8c84238e32f702e8.s2.eu.hivemq.cloud"
 port=8883
 username= "n19dccn018"
 password= "ejURUQaYZWn2@t"
-topic= "topic2"
+topic= "image"
 
 
 
@@ -39,6 +39,7 @@ def on_message(client, userdata, message):
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     # Image processing
     result_image, direction = pipeline(image)
+    print(direction)
     client.publish("output", str(direction))
 
 # Create an MQTT client
