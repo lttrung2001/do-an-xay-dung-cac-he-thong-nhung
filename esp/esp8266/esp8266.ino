@@ -158,28 +158,31 @@ void callback(char* topic, byte* payload, unsigned int length) {
   // Other values: switch control mode.
   if (strcmp(topic, "control") == 0) {
     // Parse received value
-    char value[1];
+    char value[2];
     value[0] = payload[0];
+    value[1] = '\n';
+    String valueStr(value);
+    Serial.println(valueStr);
     // If value is 1 then the car move to left.
-    if (String(value).substring(0, 1) == "1") {
+    if (valueStr.startsWith("1")) {
       leftMotor.backward();
       rightMotor.forward();
       delay(500);
     }
     // Move to right.
-    else if (String(value).substring(0, 1) == "3") {
+    else if (valueStr.startsWith("3")) {
       leftMotor.forward();
       rightMotor.backward();
       delay(500);
     }
     // Move forward.
-    else if (String(value).substring(0, 1) == "2") {
+    else if (valueStr.startsWith("2")) {
       leftMotor.forward();
       rightMotor.forward();
       delay(500);
     }
     // Move backward.
-    else if (String(value).substring(0, 1) == "4") {
+    else if (valueStr.startsWith("4")) {
       leftMotor.backward();
       rightMotor.backward();
       delay(500);
