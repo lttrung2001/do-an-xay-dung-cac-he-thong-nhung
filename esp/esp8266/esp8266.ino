@@ -37,13 +37,13 @@ const int servoPin = D7;
 // 120 degree is look right.
 Servo servo;
 
-// Left back motor.
-const int IN1 = D1;
-const int IN2 = D2;
-
 // Right back motor.
-const int IN3 = D3;
-const int IN4 = D4;
+const int IN1 = D3;
+const int IN2 = D4;
+
+// Left back motor.
+const int IN3 = D1;
+const int IN4 = D2;
 
 // Declare motor objects.
 L298N leftMotor(IN1, IN2);
@@ -204,7 +204,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       // }
       leftMotor.backward();
       rightMotor.forward();
-      delay(400);
+      delay(50);
     }
     // Forward
     else if (detectDirection.substring(0, 1) == "1") {
@@ -219,7 +219,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       // }
       leftMotor.forward();
       rightMotor.backward();
-      delay(400);
+      delay(50);
     }
     client.publish("snap", "");
   }
